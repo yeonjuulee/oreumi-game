@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<title>주덩이 미니게임</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!-- 시작 페이지 -->
+<section id="home" class="screen on">
+ <div class="home-inner">
+  <div class="home-head">
+    <div class="eyebrow">MINI GAME</div>
+    <h1 class="home-title"><b>주덩이</b> 미니게임</h1>
+    <p class="home-sub">주덩이와 함께 가볍게 즐겨보세요</p>
+  </div>
+  <div class="hero"><img src="images/judeong.png" alt="주덩이" draggable="false"></div>
+  <div class="cards">
+    <div class="card">
+      <div class="card-top"><span class="card-no">01</span><h2 class="card-title">계단 던지기</h2></div>
+      <p class="card-desc">주덩이를 던져 침대가 놓인 목표 층에 안착시키세요.<br>목표 층에서 멀어질수록 일치율이 낮아져요.</p>
+      <ul class="how">
+        <li><span>1</span>목표 층에 떨어지면 일치율 100%예요</li>
+        <li><span>2</span>주덩이를 누른 채 뒤로 당겼다가 놓아요</li>
+        <li><span>3</span>3번 던진 평균 일치율이 최종 점수예요</li>
+      </ul>
+      <div class="gift"><i>선물 조건</i>3라운드 평균 일치율 70% 이상</div>
+      <button class="btn btn-point" id="startBtn">시작하기</button>
+    </div>
+    <div class="card">
+      <div class="card-top"><span class="card-no">02</span><h2 class="card-title">쓰담쓰담 주덩이</h2></div>
+      <p class="card-desc">잠든 주덩이를 30초 동안 최대한 많이 쓰다듬어 주세요.<br>너무 쓰다듬으면 깨버리니 조심해요.</p>
+      <ul class="how">
+        <li><span>1</span>주덩이를 누른 채 문지르면 횟수가 올라가요</li>
+        <li><span>2</span>뒤척이기 시작하면 잠깐 손을 멈춰요</li>
+        <li><span>3</span>주덩이가 깨면 게임 오버예요</li>
+      </ul>
+      <div class="gift"><i>선물 조건</i>깨우지 않고 30초 동안 70회 이상</div>
+      <button class="btn btn-point" id="petStartBtn">시작하기</button>
+    </div>
+  </div>
+ </div>
+</section>
+
+<!-- 계단 던지기 -->
+<section id="game" class="screen">
+  <header class="topbar">
+    <button class="back" id="backBtn" aria-label="처음으로">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>처음으로</span>
+    </button>
+    <div class="target"><small>목표</small><strong id="targetTxt">7층</strong></div>
+    <div class="round"><span class="goal-chip">선물 조건 평균 70%</span>라운드 <b id="roundTxt">1</b> / 3</div>
+  </header>
+  <div class="stage" id="stage">
+    <canvas id="cv"></canvas>
+    <div class="hint" id="hint">주덩이를 누른 채 뒤로 당겼다 놓아 던지세요</div>
+    <div class="goal-pop" id="goalPop">골인!</div>
+
+    <div class="result" id="resultCard">
+      <span class="r-badge" id="rBadge">침대 골인</span>
+      <div class="r-pct"><span id="rPct">0</span><em>%</em></div>
+      <div class="r-label">일치율</div>
+      <div class="r-floors">
+        <div><small>목표 층</small><b id="rTarget">7층</b></div>
+        <div><small>착지 층</small><b id="rLand">5층</b></div>
+      </div>
+      <button class="btn btn-point" id="nextBtn">다음 라운드</button>
+    </div>
+
+    <div class="result" id="finalCard">
+      <span class="r-badge" id="fBadge">최종 결과</span>
+      <div class="r-pct"><span id="fPct">0</span><em>%</em></div>
+      <div class="r-label">평균 일치율</div>
+      <div class="r-goal" id="fGoal"></div>
+      <ul class="r-list" id="fList"></ul>
+      <div class="r-actions">
+        <button class="btn btn-point" id="againBtn">다시 하기</button>
+        <button class="btn btn-line" id="homeBtn">처음으로</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 쓰담쓰담 주덩이 -->
+<section id="pet" class="screen">
+  <header class="topbar">
+    <button class="back" id="petBack" aria-label="처음으로">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>처음으로</span>
+    </button>
+    <div class="pill" id="petPill"><small>쓰다듬기</small><strong id="petCount">0</strong><span>회</span><em>/ 70</em></div>
+    <div class="clock" id="clock"><b id="petTime">30.0</b> 초</div>
+  </header>
+  <div class="timebar"><i id="petBar"></i></div>
+  <div class="pet-stage" id="petStage">
+    <div class="pet-wrap" id="petWrap">
+      <div class="pet-shadow"></div>
+      <div class="pet-body" id="petBody">
+        <img id="petSleep" src="images/judeong-sleep.png" alt="자고 있는 주덩이" draggable="false">
+        <img id="petAwake" src="images/judeong.png" alt="깬 주덩이" draggable="false">
+        <div class="bubble" id="bubble"></div>
+      </div>
+      <div class="mark" id="mark">!?</div>
+      <div class="talk" id="talk">으음…</div>
+    </div>
+    <div class="hint" id="petHint">주덩이를 누른 채 문질러 쓰다듬어 주세요</div>
+
+    <div class="result" id="petResult">
+      <span class="r-badge" id="pBadge">성공</span>
+      <div class="r-pct"><span id="pCount">0</span><em>회</em></div>
+      <div class="r-label" id="pLabel">쓰다듬은 횟수</div>
+      <div class="r-goal" id="pGoal"></div>
+      <div class="r-floors">
+        <div><small id="pLeftLabel">남은 시간</small><b id="pLeft">0초</b></div>
+        <div><small>최고 기록</small><b id="pBest">0회</b></div>
+      </div>
+      <div class="r-actions" style="margin-top:0">
+        <button class="btn btn-point" id="petAgain">다시 하기</button>
+        <button class="btn btn-line" id="petHome">처음으로</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script src="js/stairs.js"></script>
+<script src="js/pet.js"></script>
+</body>
+</html>
