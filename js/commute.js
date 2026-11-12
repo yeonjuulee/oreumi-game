@@ -18,6 +18,8 @@ const CLEAR = 700;          // 회사 앞 이만큼(약 26m)은 장애물 없이
 
 const scr = $('commute'), stage = $('cmStage'), cv = $('cmCv'), ctx = cv.getContext('2d');
 const img = new Image(); img.src = 'images/judeong.png';
+// 졸음이 쌓일수록 눈이 감긴 이미지로 바뀜 (눈 부분만 다름)
+const drowsyImgs = ['images/judeong.png', 'images/judeong-drowsy1.png', 'images/judeong-drowsy2.png'].map(src => { const i = new Image(); i.src = src; return i; });
 const sleepImg = new Image(); sleepImg.src = 'images/judeong-sleep.png';
 
 /* ---------- 상태 ---------- */
@@ -387,6 +389,7 @@ function draw(dt) {
       pops.push({ text: 'Z', x: x + 70 + Math.random() * 20, y: feetY - 120, life: 1.8, color: '#8E8E8E', size: 26 + Math.random() * 18, vx: 18 + Math.random() * 14 });
     }
   } else if (img.complete) {
+    const face = drowsyImgs[Math.min(drowsy, 2)];
     const walking = state === 'run';
     const ph = t * 9;
     let bob = walking ? Math.abs(Math.sin(ph)) * 7 : 0;
@@ -398,7 +401,7 @@ function draw(dt) {
     ctx.save();
     if (inv > 0 && Math.floor(inv * 10) % 2 === 0) ctx.globalAlpha = 0.45;
     ctx.translate(x, feetY - bob); ctx.rotate(tilt + lean);
-    ctx.drawImage(img, -CHAR_W / 2, -CHAR_H, CHAR_W, CHAR_H);
+    ctx.drawImage(face.complete ? face : img, -CHAR_W / 2, -CHAR_H, CHAR_W, CHAR_H);
     ctx.restore();
   }
 
