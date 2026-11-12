@@ -40,6 +40,17 @@
       <div class="gift"><i>선물 조건</i>깨우지 않고 30초 동안 70회 이상</div>
       <button class="btn btn-point" id="petStartBtn">시작하기</button>
     </div>
+    <div class="card">
+      <div class="card-top"><span class="card-no">03</span><h2 class="card-title">출근길 주덩이</h2></div>
+      <p class="card-desc">길 위에 놓인 침대의 유혹을 피해서<br>회사까지 무사히 출근해 주세요.</p>
+      <ul class="how">
+        <li><span>1</span>← → 키나 화면 왼쪽·오른쪽을 눌러 길을 바꿔요</li>
+        <li><span>2</span>침대·베개·이불·소파에 3번 닿으면 잠들어요</li>
+        <li><span>3</span>커피를 마시면 졸음이 1칸 줄어요</li>
+      </ul>
+      <div class="gift"><i>선물 조건</i>잠들지 않고 회사(500m)까지 도착하기</div>
+      <button class="btn btn-point" id="cmStartBtn">시작하기</button>
+    </div>
   </div>
  </div>
 </section>
@@ -125,7 +136,72 @@
   </div>
 </section>
 
+<!-- 출근길 주덩이 -->
+<section id="commute" class="screen">
+  <header class="topbar">
+    <button class="back" id="cmBack" aria-label="처음으로">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>처음으로</span>
+    </button>
+    <div class="pill" id="cmPill"><small>회사까지</small><strong id="cmLeft">500</strong><span>m</span></div>
+    <div class="drowsy" id="cmDrowsy"><small>졸음</small><i></i><i></i><i></i></div>
+  </header>
+  <div class="timebar"><i id="cmBar" style="transform:scaleX(0)"></i></div>
+  <div class="cm-stage" id="cmStage">
+    <canvas id="cmCv"></canvas>
+
+    <aside class="cm-side" id="cmLeftPanel">
+      <div class="cm-panel">
+        <b>조작 방법</b>
+        <div class="cm-row"><span class="key">←</span><span class="key">→</span><em>키보드</em></div>
+        <div class="cm-row"><span class="tap"><i></i><i></i></span><em>화면 왼쪽 · 오른쪽 터치</em></div>
+        <div class="cm-legend">
+          <div><i>피해요</i>침대 · 베개 · 이불 · 소파</div>
+          <div><i>먹어요</i>커피 (졸음 1칸 회복)</div>
+        </div>
+      </div>
+      <div class="cm-panel cm-drowsy-card" id="cmDrowsyCard">
+        <b>졸음</b>
+        <div class="zz" id="cmZz"><i>Z</i><i>Z</i><i>Z</i></div>
+        <p id="cmDrowsyTxt">3번 부딪히면 잠들어요</p>
+      </div>
+    </aside>
+    <aside class="cm-side" id="cmRightPanel">
+      <div class="cm-track">
+        <div class="cm-end">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 21V5a1 1 0 0 1 1-1h9a1 1 0 0 1 1 1v16"/><path d="M15 10h4a1 1 0 0 1 1 1v10"/><path d="M3 21h18"/><path d="M8 8h3M8 12h3M8 16h3"/></svg>
+          회사 500m
+        </div>
+        <div class="cm-rail"><div class="cm-fill" id="cmFill"></div>
+          <div class="cm-marker" id="cmMarker"><img src="images/judeong.png" alt=""><span id="cmMarkerTxt">0m</span></div>
+        </div>
+        <div class="cm-end">집 0m</div>
+      </div>
+    </aside>
+
+    <div class="cm-count" id="cmCount">3</div>
+    <div class="cm-banner" id="cmBanner"></div>
+    <div class="hint" id="cmHint">← → 키 또는 화면 왼쪽·오른쪽을 눌러 길을 바꿔요</div>
+
+    <div class="result" id="cmResult">
+      <span class="r-badge" id="cmBadge">출근 성공</span>
+      <div class="r-pct" id="cmBig">0<em>초</em></div>
+      <div class="r-label" id="cmLabel">회사까지 걸린 시간</div>
+      <div class="r-goal" id="cmNote"></div>
+      <div class="r-floors">
+        <div><small id="cmL1">부딪힌 횟수</small><b id="cmV1">0번</b></div>
+        <div><small id="cmL2">마신 커피</small><b id="cmV2">0잔</b></div>
+      </div>
+      <div class="r-actions" style="margin-top:0">
+        <button class="btn btn-point" id="cmAgain">다시 하기</button>
+        <button class="btn btn-line" id="cmHome">처음으로</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <script src="js/stairs.js"></script>
 <script src="js/pet.js"></script>
+<script src="js/commute.js"></script>
 </body>
 </html>

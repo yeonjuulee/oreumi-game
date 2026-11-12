@@ -22,6 +22,8 @@ const BED_TOP = 46;            // 침대 윗면 높이
 /* ---------- DOM ---------- */
 const $ = id => document.getElementById(id);
 const home = $('home'), game = $('game'), stage = $('stage'), cv = $('cv'), ctx = cv.getContext('2d');
+// 골인 문구는 한 번 재생되면 표시를 지워둠 (화면을 다시 열 때 재생되는 문제 방지)
+$('goalPop').addEventListener('animationend', () => $('goalPop').classList.remove('go'));
 const img = new Image(); img.src = 'images/judeong.png';
 
 /* ---------- 상태 ---------- */
@@ -56,6 +58,7 @@ function resetChar() {
 }
 
 function newRound() {
+  $('goalPop').classList.remove('go');   // 지난 판의 골인 문구가 다시 재생되지 않게
   let t;
   do { t = 2 + Math.floor(Math.random() * 10); } while (results.some(r => r.target === t) && results.length < 9);
   target = t;
