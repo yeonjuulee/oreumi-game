@@ -216,3 +216,6 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 .cm-banner.on{animation:bannerIn 2s ease-out forwards}
 @keyframes bannerIn{0%{opacity:0;transform:translate(-50%,-30%) scale(.7)}18%{opacity:1;transform:translate(-50%,-50%) scale(1.06)}
   30%{transform:translate(-50%,-50%) scale(1)}85%{opacity:1}100%{opacity:0;transform:translate(-50%,-56%) scale(1)}}
+
+.cm-logo-row{display:flex;align-items:center}
+.cm-logo-row img{width:18px;height:18px;margin-right:6px}

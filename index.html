@@ -46,7 +46,7 @@
       <ul class="how">
         <li><span>1</span>← → 키나 화면 왼쪽·오른쪽을 눌러 길을 바꿔요</li>
         <li><span>2</span>침대·베개·이불·소파에 3번 닿으면 잠들어요</li>
-        <li><span>3</span>커피를 마시면 졸음이 1칸 줄어요</li>
+        <li><span>3</span>오름 로고를 먹으면 졸음이 1칸 줄어요</li>
       </ul>
       <div class="gift"><i>승리 조건</i>잠들지 않고 회사(500m)까지 도착하기</div>
       <button class="btn btn-point" id="cmStartBtn">시작하기</button>
@@ -63,7 +63,7 @@
       <span>처음으로</span>
     </button>
     <div class="target"><small>목표</small><strong id="targetTxt">7층</strong></div>
-    <div class="round"><span class="goal-chip">선물 조건 평균 70%</span>라운드 <b id="roundTxt">1</b> / 3</div>
+    <div class="round"><span class="goal-chip">승리 조건 평균 70%</span>라운드 <b id="roundTxt">1</b> / 3</div>
   </header>
   <div class="stage" id="stage">
     <canvas id="cv"></canvas>
@@ -157,7 +157,7 @@
         <div class="cm-row"><span class="tap"><i></i><i></i></span><em>화면 왼쪽 · 오른쪽 터치</em></div>
         <div class="cm-legend">
           <div><i>피해요</i>침대 · 베개 · 이불 · 소파</div>
-          <div><i>먹어요</i>커피 (졸음 1칸 회복)</div>
+          <div class="cm-logo-row"><i>먹어요</i><img src="images/oreum-logo.png" alt="">오름 로고 (졸음 -1)</div>
         </div>
       </div>
       <div class="cm-panel cm-drowsy-card" id="cmDrowsyCard">
@@ -190,7 +190,7 @@
       <div class="r-goal" id="cmNote"></div>
       <div class="r-floors">
         <div><small id="cmL1">부딪힌 횟수</small><b id="cmV1">0번</b></div>
-        <div><small id="cmL2">마신 커피</small><b id="cmV2">0잔</b></div>
+        <div><small id="cmL2">모은 오름</small><b id="cmV2">0개</b></div>
       </div>
       <div class="r-actions" style="margin-top:0">
         <button class="btn btn-point" id="cmAgain">다시 하기</button>

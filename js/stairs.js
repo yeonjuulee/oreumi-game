@@ -3,7 +3,7 @@
 'use strict';
 const POINT = '#FE7606';
 const ROUNDS = 3;
-const GOAL_PCT = 70;          // 선물 조건: 3라운드 평균 일치율
+const GOAL_PCT = 70;          // 승리 조건: 3라운드 평균 일치율
 
 /* ---------- 월드 설정 (논리 좌표) ---------- */
 const W = 1600, H = 1000;
@@ -241,7 +241,7 @@ function showFinal() {
     `<li><span>${i + 1}라운드 · 목표 ${r.target}층 → ${r.floor === 0 ? '바닥' : r.floor + '층'}</span>` +
     `<b>${r.pct}%${r.hit ? '<span class="goal">도착</span>' : ''}</b></li>`).join('');
   const ok = avg >= GOAL_PCT, b = $('fBadge');
-  b.textContent = ok ? '목표 달성 · 선물 획득!' : '아쉬워요 · 목표 미달성';
+  b.textContent = ok ? '목표 달성 · 승리!' : '아쉬워요 · 목표 미달성';
   b.className = ok ? 'r-badge win' : 'r-badge miss';
   $('fGoal').textContent = ok ? `목표 평균 ${GOAL_PCT}% 이상을 달성했어요` : `목표 평균 ${GOAL_PCT}% 이상 · ${GOAL_PCT - avg}%가 부족해요`;
   countUp($('fPct'), avg);

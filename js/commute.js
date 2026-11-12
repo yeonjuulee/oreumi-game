@@ -172,7 +172,7 @@ function bump() {
 }
 function drink(o) {
   o.taken = true; cups++;
-  if (drowsy > 0) { drowsy--; pop('졸음 -1', POINT); } else pop('커피!', POINT);
+  if (drowsy > 0) { drowsy--; pop('졸음 -1', POINT); } else pop('오름!', POINT);
   hud();
 }
 function pop(text, color) { pops.push({ text, x: x + 80, y: feetY - CHAR_H + 20, life: 1, color, size: 26 }); }
@@ -216,17 +216,17 @@ function finish(ok) {
 
   const b = $('cmBadge');
   if (ok) {
-    b.textContent = '출근 성공 · 선물 획득!'; b.className = 'r-badge win';
+    b.textContent = '출근 성공 · 승리!'; b.className = 'r-badge win';
     $('cmBig').innerHTML = `${elapsed.toFixed(1)}<em>초</em>`;
     $('cmLabel').textContent = '회사까지 걸린 시간';
     $('cmNote').textContent = `잠들지 않고 ${GOAL_M}m를 걸어왔어요`;
     $('cmL1').textContent = '부딪힌 횟수'; $('cmV1').textContent = hits + '번';
-    $('cmL2').textContent = '마신 커피'; $('cmV2').textContent = cups + '잔';
+    $('cmL2').textContent = '모은 오름'; $('cmV2').textContent = cups + '개';
   } else {
     b.textContent = '침대의 유혹에 졌어요'; b.className = 'r-badge miss';
     $('cmBig').innerHTML = `${m}<em>m</em>`;
     $('cmLabel').textContent = '걸어온 거리';
-    $('cmNote').textContent = `회사까지 ${GOAL_M - m}m 남았어요 · 잠들지 않고 도착하면 선물을 받아요`;
+    $('cmNote').textContent = `회사까지 ${GOAL_M - m}m 남았어요 · 잠들지 않고 도착하면 승리예요`;
     $('cmL1').textContent = '부딪힌 횟수'; $('cmV1').textContent = hits + '번';
     $('cmL2').textContent = '최고 기록'; $('cmV2').textContent = best >= GOAL_M ? (bestTime ? bestTime.toFixed(1) + '초' : '도착') : best + 'm';
   }
@@ -288,14 +288,20 @@ function drawBlanket(cx, yb, o) {
   ctx.fillStyle = '#FF8A33'; ctx.fillRect(-o.w / 2, -o.h / 2 + 18, o.w, 16);
   ctx.restore();
 }
-function drawCoffee(cx, yb) {
-  const cy = yb - 34;
-  ctx.fillStyle = '#FFFFFF'; ctx.strokeStyle = LINE; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.arc(cx, cy, 34, 0, Math.PI * 2); ctx.fill(); ctx.stroke();
-  ctx.fillStyle = '#7A4A2E'; ctx.beginPath(); ctx.arc(cx, cy, 22, 0, Math.PI * 2); ctx.fill();
-  ctx.strokeStyle = LINE; ctx.lineWidth = 3; ctx.beginPath(); ctx.arc(cx + 36, cy, 10, -Math.PI / 2, Math.PI / 2); ctx.stroke();
+// 오름 로고 (먹으면 졸음 -1): 살짝 빙글 돌고 숨 쉬듯 커졌다 작아짐
+const logoImg = new Image(); logoImg.src = 'images/oreum-logo.png';
+function drawLogo(cx, yb) {
+  const cy = yb - 36, R = 36;
+  const pulse = 1 + Math.sin(t * 5) * 0.06;
+  ctx.fillStyle = 'rgba(254,118,6,.12)';
+  ctx.beginPath(); ctx.arc(cx, cy, R * 1.35 * pulse, 0, Math.PI * 2); ctx.fill();
+  if (logoImg.complete) {
+    ctx.save(); ctx.translate(cx, cy); ctx.rotate(t * 0.8); ctx.scale(pulse, pulse);
+    ctx.drawImage(logoImg, -R, -R, R * 2, R * 2);
+    ctx.restore();
+  }
   ctx.fillStyle = '#C55400'; ctx.font = '400 15px Pretendard, sans-serif'; ctx.textAlign = 'center'; ctx.textBaseline = 'top';
-  ctx.fillText('졸음 -1', cx, cy + 42);
+  ctx.fillText('졸음 -1', cx, cy + R * 1.35 + 6);
 }
 function drawBuilding(yb) {
   const w = 420, h = 250, x0 = ROAD / 2 - w / 2, y0 = yb - h;
@@ -344,11 +350,11 @@ function draw(dt) {
   const by = feetY - (GOAL + 6 - dist);
   if (by > -20) drawBuilding(by);
 
-  // 장애물 · 커피
+  // 장애물 · 오름 로고
   for (const o of objs) {
     const yb = feetY - (o.at - dist), cx = LANES[o.lane];
     if (yb < -10 || yb - (o.h || 80) > viewH) continue;
-    if (o.kind === 'coffee') { if (!o.taken) drawCoffee(cx, yb); continue; }
+    if (o.kind === 'coffee') { if (!o.taken) drawLogo(cx, yb); continue; }
     ctx.save(); ctx.translate(cx, yb); ctx.rotate(o.rot); ctx.translate(-cx, -yb);
     if (o.type === 'bed') drawBed(cx, yb, o);
     else if (o.type === 'sofa') drawSofa(cx, yb, o);

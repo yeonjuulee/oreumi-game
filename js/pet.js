@@ -6,7 +6,7 @@ const home = $('home'), scr = $('pet'), stage = $('petStage'), wrap = $('petWrap
 const sleepImg = $('petSleep'), bubble = $('bubble'), mark = $('mark'), talk = $('talk');
 
 const TIME = 30;
-const GOAL = 70;          // 선물 조건: 깨우지 않고 70회 이상
+const GOAL = 70;          // 승리 조건: 깨우지 않고 70회 이상
 const STROKE = 0.25;      // 주덩이 너비의 25%를 문지를 때마다 1회
 const RATE = 0.17;        // 이동 거리당 깨어남 게이지 증가량
 const DECAY = 0.30;       // 손을 멈췄을 때 초당 감소량
@@ -168,7 +168,7 @@ function showResult(ok) {
   if (ok && count > best) { best = count; try { localStorage.setItem('judeong-pet-best', best); } catch (e) {} }
   const b = $('pBadge');
   const win = ok && count >= GOAL;
-  b.textContent = win ? '목표 달성 · 선물 획득!' : ok ? '푹 재웠어요 · 목표 미달성' : '주덩이가 깼어요';
+  b.textContent = win ? '목표 달성 · 승리!' : ok ? '푹 재웠어요 · 목표 미달성' : '주덩이가 깼어요';
   b.className = win ? 'r-badge win' : 'r-badge miss';
   $('pGoal').textContent = win ? `목표 ${GOAL}회 이상을 달성했어요`
     : ok ? `목표 ${GOAL}회까지 ${GOAL - count}회 부족해요` : `깨우지 않고 ${GOAL}회 이상 쓰다듬어야 해요`;
