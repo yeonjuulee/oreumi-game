@@ -68,6 +68,7 @@ function reset() {
 
 /* 입력 */
 stage.addEventListener('pointerdown', e => {
+  if (window.HowTo && HowTo.isOpen) return;
   if (state !== 'ready' && state !== 'play') return;
   if (e.target.closest('.result')) return;
   stage.setPointerCapture(e.pointerId);
@@ -234,6 +235,7 @@ function open() {
   home.classList.remove('on'); scr.classList.add('on');
   reset();
   if (!running) { running = true; last = performance.now() / 1000; requestAnimationFrame(frame); }
+  if (window.HowTo) HowTo.show('pet', { onExit: close });
 }
 function close() { running = false; state = 'ready'; scr.classList.remove('on'); home.classList.add('on'); }
 $('petStartBtn').addEventListener('click', open);

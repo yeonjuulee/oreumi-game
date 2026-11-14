@@ -300,3 +300,24 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 /* 잠꼬대 말풍선 꼬리: 오른쪽 아래(오르미 얼굴 쪽)를 가리킴 */
 .talk::after{content:"";position:absolute;right:10px;bottom:-6px;width:10px;height:10px;background:#fff;
   border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:skewX(-30deg) rotate(45deg);border-radius:0 0 3px 0}
+
+/* ---------- 게임 방법 모달 ---------- */
+.howto{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
+.howto.on{display:flex;animation:howIn .22s ease-out}
+.howto-card{width:min(420px,100%);max-height:100%;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px 28px 18px;box-shadow:0 20px 60px rgba(0,0,0,.08);text-align:center;animation:howUp .28s cubic-bezier(.2,.9,.3,1.1)}
+.howto-title{margin-top:12px;font-size:24px;font-weight:300;display:flex;align-items:baseline;justify-content:center;gap:10px}
+.howto-img{display:block;width:110px;margin:14px auto 4px;animation:bob 2.6s ease-in-out infinite}
+.howto-note{font-size:13px;color:#C55400;margin-top:4px}
+.howto-steps{text-align:left;margin:18px 0 16px}
+.howto .gift{justify-content:center;margin:0 0 18px}
+.howto-exit{margin-top:8px;font-size:14px;color:var(--sub);padding:8px 12px}
+.howto-exit:hover{color:var(--ink)}
+@keyframes howIn{from{opacity:0}}
+@keyframes howUp{from{opacity:0;transform:translateY(14px) scale(.97)}}
+
+[hidden]{display:none!important}
+/* 시작 페이지 카드: 설명 아래 여백, 승리 조건·버튼은 카드 아래쪽에 맞춰 정렬 */
+#home .card-desc{margin-bottom:16px}
+#home .gift{margin:auto 0 14px}
+#home .card .btn{margin-top:0}
+.howto-img.silhouette{filter:brightness(0)}

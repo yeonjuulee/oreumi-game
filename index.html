@@ -28,45 +28,25 @@
   <div class="cards">
     <div class="card">
       <div class="card-top"><span class="card-no">01</span><h2 class="card-title">오르미 계단 던지기</h2></div>
-      <p class="card-desc">오르미를 던져 침대가 놓인 목표 층에 안착시키세요.<br>목표 층에서 멀어질수록 일치율이 낮아져요.</p>
-      <ul class="how">
-        <li><span>1</span>목표 층에 떨어지면 일치율 100%예요</li>
-        <li><span>2</span>오르미를 누른 채 뒤로 당겼다가 놓아요</li>
-        <li><span>3</span>3번 던진 평균 일치율이 최종 점수예요</li>
-      </ul>
+      <p class="card-desc">오르미를 던져 침대가 놓인 목표 층에 안착시키세요. 목표 층에서 멀어질수록 일치율이 낮아져요.</p>
       <div class="gift"><i>승리 조건</i>3라운드 평균 일치율 70% 이상</div>
       <button class="btn btn-point" id="startBtn">시작하기</button>
     </div>
     <div class="card">
       <div class="card-top"><span class="card-no">02</span><h2 class="card-title">오르미 쓰다듬기</h2></div>
-      <p class="card-desc">잠든 오르미를 30초 동안 최대한 많이 쓰다듬어 주세요.<br>너무 쓰다듬으면 깨버리니 조심해요.</p>
-      <ul class="how">
-        <li><span>1</span>오르미를 누른 채 문지르면 횟수가 올라가요</li>
-        <li><span>2</span>뒤척이기 시작하면 잠깐 손을 멈춰요</li>
-        <li><span>3</span>오르미가 깨면 게임 오버예요</li>
-      </ul>
+      <p class="card-desc">잠든 오르미를 30초 동안 최대한 많이 쓰다듬어 주세요. 너무 쓰다듬으면 깨버리니 조심해요.</p>
       <div class="gift"><i>승리 조건</i>깨우지 않고 30초 동안 70회 이상</div>
       <button class="btn btn-point" id="petStartBtn">시작하기</button>
     </div>
     <div class="card">
       <div class="card-top"><span class="card-no">03</span><h2 class="card-title">오르미 출근시키기</h2></div>
-      <p class="card-desc">길 위에 놓인 침대의 유혹을 피해서<br>회사까지 무사히 출근해 주세요.</p>
-      <ul class="how">
-        <li><span>1</span>← → 키나 화면 왼쪽·오른쪽을 눌러 길을 바꿔요</li>
-        <li><span>2</span>침대·베개·이불·소파에 3번 닿으면 잠들어요</li>
-        <li><span>3</span>오름 로고를 먹으면 졸음이 1칸 줄어요</li>
-      </ul>
+      <p class="card-desc">길 위에 놓인 침대의 유혹을 피해서 회사까지 무사히 출근해 주세요.</p>
       <div class="gift"><i>승리 조건</i>잠들지 않고 회사(500m)까지 도착하기</div>
       <button class="btn btn-point" id="cmStartBtn">시작하기</button>
     </div>
     <div class="card">
       <div class="card-top"><span class="card-no">04</span><h2 class="card-title">시크릿 오르미 찾기</h2></div>
-      <p class="card-desc">오르미 친구들 사이에 숨은 시크릿 오르미를<br>시간 안에 찾아서 톡 눌러 주세요.</p>
-      <ul class="how">
-        <li><span>1</span>갈색 코의 서 있는 오르미를 찾아요</li>
-        <li><span>2</span>라운드마다 18 → 36 → 55마리로 늘어나요</li>
-        <li><span>3</span>다른 오르미를 누르면 그 라운드는 실패예요</li>
-      </ul>
+      <p class="card-desc">오르미 친구들 사이에 숨은 시크릿 오르미를 시간 안에 찾아서 톡 눌러 주세요.</p>
       <div class="gift"><i>승리 조건</i>3라운드 모두 찾기</div>
       <button class="btn btn-point" id="fdStartBtn">시작하기</button>
     </div>
@@ -238,17 +218,6 @@
     <div class="fd-toast" id="fdToast"></div>
     <div class="fd-card" id="fdCard"><p class="rd"></p><p class="tt"></p><p class="ds"></p></div>
 
-    <div class="result" id="fdIntro">
-      <span class="r-badge">찾아야 할 오르미</span>
-      <img class="fd-hero" src="images/find/secret.png" alt="시크릿 오르미">
-      <div class="r-label">갈색 코의 서 있는 오르미예요. 잘 기억해 두세요.</div>
-      <div class="r-floors fd-rules">
-        <div><small>라운드</small><b>3번</b></div>
-        <div><small>틀리면</small><b>그 라운드 실패</b></div>
-      </div>
-      <button class="btn btn-point" id="fdGo">시작하기</button>
-    </div>
-
     <div class="result" id="fdResult">
       <span class="r-badge" id="fdBadge">결과</span>
       <div class="r-pct"><span id="fdCount">0</span><em>/ 3</em></div>
@@ -266,7 +235,22 @@
   </div>
 </section>
 
+<!-- 게임 방법 모달 -->
+<div class="howto" id="howto" role="dialog" aria-modal="true" aria-labelledby="howtoTitle">
+  <div class="howto-card">
+    <span class="r-badge">게임 방법</span>
+    <h2 class="howto-title"><span class="card-no" id="howtoNo">01</span><span id="howtoTitle">게임</span></h2>
+    <img class="howto-img" id="howtoImg" alt="찾아야 할 오르미" hidden>
+    <p class="howto-note" id="howtoNote" hidden></p>
+    <ol class="how howto-steps" id="howtoSteps"></ol>
+    <div class="gift"><i>승리 조건</i><span id="howtoWin"></span></div>
+    <button class="btn btn-point" id="howtoGo">시작하기</button>
+    <button class="howto-exit" id="howtoExit">처음으로</button>
+  </div>
+</div>
+
 <script src="js/sound.js"></script>
+<script src="js/howto.js"></script>
 <script src="js/stairs.js"></script>
 <script src="js/pet.js"></script>
 <script src="js/commute.js"></script>

@@ -18,15 +18,30 @@ window.Sound = (() => {
     bgmBus = ctx.createGain(); bgmBus.gain.value = bgmOn ? 1 : 0; bgmBus.connect(master);
     return ctx;
   }
-  // 브라우저는 사용자가 한 번 누르기 전까지 소리를 막으므로, 첫 터치/클릭/키 입력 때 오디오를 연다
+  // 브라우저는 사용자가 화면을 한 번 누르기 전까지 소리를 막는다.
+  // 아이패드(터치)는 누르는 순간(pointerdown)이 아니라 손을 뗄 때(touchend/click)에만 허락하므로
+  // 여러 입력 이벤트에서 모두 오디오를 열어 두고, 열리면 듣기를 그만둔다.
+  const UNLOCK_EVENTS = ['pointerdown', 'pointerup', 'mousedown', 'touchend', 'click', 'keydown'];
   function unlock() {
     try {
       ensure();
-      if (ctx && ctx.state === 'suspended') ctx.resume();
-      if (bgmOn) startBgm();
+      if (!ctx) return;
+      if (ctx.state !== 'running') {
+        // iOS 사파리는 사용자 입력 안에서 소리를 한 번 재생해야 완전히 열린다 (무음 1샘플)
+        try {
+          const b = ctx.createBuffer(1, 1, 22050), src = ctx.createBufferSource();
+          src.buffer = b; src.connect(ctx.destination); src.start(0);
+        } catch (e) {}
+        const p = ctx.resume();
+        if (p && p.then) p.then(() => { if (ctx.state === 'running') onRunning(); }).catch(() => {});
+      } else onRunning();
     } catch (e) {}
   }
-  ['pointerdown', 'keydown'].forEach(t => window.addEventListener(t, unlock, { capture: true }));
+  function onRunning() {
+    if (bgmOn) { if (bgmTimer) nextTime = Math.max(nextTime, ctx.currentTime + 0.05); else startBgm(); }
+    UNLOCK_EVENTS.forEach(t => window.removeEventListener(t, unlock, true));
+  }
+  UNLOCK_EVENTS.forEach(t => window.addEventListener(t, unlock, true));
 
   /* ---------- 기본 음 ---------- */
   function tone(freq, at, dur, type, vol, slideTo, bus) {
@@ -171,7 +186,8 @@ window.Sound = (() => {
   return {
     play, tone: (f, at, dur, type, vol) => { if (sfxOn && ensure() && ctx.state === 'running') tone(f, at, dur, type, vol); },
     unlock, setSfx, setBgm,
-    get sfxOn() { return sfxOn; }, get bgmOn() { return bgmOn; }
+    get sfxOn() { return sfxOn; }, get bgmOn() { return bgmOn; },
+    get state() { return ctx ? ctx.state : 'none'; }, get playing() { return !!bgmTimer; }
   };
 })();
 

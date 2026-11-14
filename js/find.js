@@ -92,11 +92,10 @@ function showIntro() {
   $('fdRound').textContent = '1';
   setDots();
   setClock(ROUNDS[0].t, ROUNDS[0].t);
-  $('fdIntro').classList.add('on');
 }
 function startGame() {
   clearTimers();
-  $('fdIntro').classList.remove('on'); $('fdResult').classList.remove('on');
+  $('fdResult').classList.remove('on');
   results = []; round = 0;
   introRound();
 }
@@ -296,6 +295,8 @@ function showResult() {
 function open() {
   document.getElementById('home').classList.remove('on'); scr.classList.add('on');
   fit(); showIntro();
+  const go = () => { unlockAudio(); startGame(); };
+  if (window.HowTo) HowTo.show('find', { onStart: go, onExit: close }); else go();
 }
 function close() {
   clearTimers(); state = 'idle';
@@ -306,6 +307,5 @@ function close() {
 $('fdStartBtn').addEventListener('click', open);
 $('fdBack').addEventListener('click', close);
 $('fdHome').addEventListener('click', close);
-$('fdGo').addEventListener('click', () => { unlockAudio(); sfx.tap(); startGame(); });
 $('fdAgain').addEventListener('click', () => { unlockAudio(); sfx.tap(); startGame(); });
 })();

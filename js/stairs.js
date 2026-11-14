@@ -93,6 +93,7 @@ const toScreen = (x, y) => ({ x: x * scale + ox, y: y * scale + oy });
 
 /* ---------- 입력 ---------- */
 cv.addEventListener('pointerdown', e => {
+  if (window.HowTo && HowTo.isOpen) return;
   if (phase !== 'aim') return;
   const p = toWorld(e.clientX, e.clientY);
   const cx = ch.x, cy = ch.y - CHAR_H / 2;
@@ -445,6 +446,7 @@ function goGame() {
   home.classList.remove('on'); game.classList.add('on');
   resize(); startGame();
   if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+  if (window.HowTo) HowTo.show('stairs', { onExit: goHome });
 }
 function goHome() {
   running = false;

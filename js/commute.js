@@ -29,15 +29,15 @@ let roadPx = 600, scale = 1, roadLeft = 0, viewH = 800, feetY = 690, dpr = 1, ru
 let best = 0, bestTime = 0;
 try { best = +localStorage.getItem('judeong-commute-best') || 0; bestTime = +localStorage.getItem('judeong-commute-time') || 0; } catch (e) {}
 
-function reset() {
+function reset(wait) {
   dist = 0; speed = SPEED_START; lane = 1; x = LANES[1]; objs = []; pops = []; dust = [];
   confetti = []; endT = 0; nextZ = 0;
   $('cmBanner').className = 'cm-banner';
   nextSpawn = 420; drowsy = 0; hits = 0; cups = 0; inv = 0; slow = 0; elapsed = 0; t = 0; lastFree = [1];
-  state = 'count'; countT = 3;
+  state = wait ? 'wait' : 'count'; countT = 3;   // wait: 게임 방법 모달을 닫을 때까지 대기
   $('cmResult').classList.remove('on'); stage.classList.remove('flash');
   $('cmHint').classList.remove('hide');
-  showCount(3);
+  if (wait) hideCount(); else showCount(3);
   hud();
 }
 
@@ -118,6 +118,7 @@ function update(dt) {
   t += dt;
   x += (LANES[lane] - x) * Math.min(1, dt * 14);
 
+  if (state === 'wait') return;
   if (state === 'count') {
     countT -= dt;
     const n = Math.ceil(countT);
@@ -444,8 +445,10 @@ function frame(now) {
 }
 function open() {
   document.getElementById('home').classList.remove('on'); scr.classList.add('on');
-  resize(); reset();
+  resize(); reset(true);
   if (!running) { running = true; last = performance.now(); requestAnimationFrame(frame); }
+  const go = () => { state = 'count'; countT = 3; showCount(3); };
+  if (window.HowTo) HowTo.show('commute', { onStart: go, onExit: close }); else go();
 }
 function close() { running = false; state = 'idle'; hideCount(); scr.classList.remove('on'); document.getElementById('home').classList.add('on'); }
 $('cmStartBtn').addEventListener('click', open);
