@@ -1,4 +1,4 @@
-/* 02 쓰담쓰담 주덩이 */
+/* 02 쓰담쓰담 오르미 */
 (() => {
 'use strict';
 const $ = id => document.getElementById(id);
@@ -7,7 +7,7 @@ const sleepImg = $('petSleep'), bubble = $('bubble'), mark = $('mark'), talk = $
 
 const TIME = 30;
 const GOAL = 70;          // 승리 조건: 깨우지 않고 70회 이상
-const STROKE = 0.25;      // 주덩이 너비의 25%를 문지를 때마다 1회
+const STROKE = 0.25;      // 오르미 너비의 25%를 문지를 때마다 1회
 const RATE = 0.17;        // 이동 거리당 깨어남 게이지 증가량
 const DECAY = 0.30;       // 손을 멈췄을 때 초당 감소량
 const UNEASY = 0.45, WARN = 0.72;
@@ -52,7 +52,9 @@ let squish = 0, twitchT = 0, nextZ = 0, nextTwitch = 0, running = false, last = 
 let best = 0;
 try { best = +localStorage.getItem('judeong-pet-best') || 0; } catch (e) {}
 
+let lastSec = -1;   // 마지막 5초 째깍 소리용
 function reset() {
+  lastSec = -1;
   state = 'ready'; count = 0; gauge = 0; left = TIME; accum = 0; samples = []; mood = 'calm';
   sens = 0.88 + Math.random() * 0.26;     // 판마다 예민함이 조금씩 달라요
   $('petCount').textContent = '0'; $('petTime').textContent = TIME.toFixed(1); $('petPill').classList.remove('reached');
@@ -90,7 +92,7 @@ function pet(d, mx, my) {
   const now = performance.now() / 1000;
   const w = wrap.getBoundingClientRect().width;
   samples.push({ t: now, d }); lastPetT = now;
-  // 속도(초당 주덩이 너비) 빠를수록 더 쉽게 깸
+  // 속도(초당 오르미 너비) 빠를수록 더 쉽게 깸
   samples = samples.filter(s => now - s.t < 0.2);
   const speed = samples.reduce((a, s) => a + s.d, 0) / 0.2 / w;
   const speedMul = Math.min(2, 1 + 0.9 * Math.max(0, speed - 1.4) / 1.4);
@@ -103,6 +105,7 @@ function pet(d, mx, my) {
     const c = $('petCount'); c.textContent = count;
     if (count === GOAL) $('petPill').classList.add('reached');
     c.classList.remove('bump'); void c.offsetWidth; c.classList.add('bump');
+    window.Sound && Sound.play('pat');
     squish = 1;
     heart(mx, my);
   }
@@ -140,6 +143,7 @@ function setMood(m) {
   const prev = mood; mood = m;
   stage.classList.toggle('warn', m === 'warn');
   if (m === 'warn') {
+    window.Sound && Sound.play('warn');
     mark.textContent = '!?'; mark.className = 'mark on';
     talk.textContent = MUTTER[Math.floor(Math.random() * MUTTER.length)]; talk.classList.add('on');
     if (bubbleOn) { bubble.className = 'bubble pop'; bubbleOn = false; fx('poof', '퐁', '64%', '70%'); }
@@ -147,7 +151,7 @@ function setMood(m) {
     mark.className = 'mark'; talk.classList.remove('on');
   }
   if (m === 'calm' && !bubbleOn) { bubble.className = 'bubble'; bubbleOn = true; }
-  if (m === 'uneasy' && prev === 'calm') { twitchT = 0.45; twitchWord(); }
+  if (m === 'uneasy' && prev === 'calm') { twitchT = 0.45; twitchWord(); window.Sound && Sound.play('twitch'); }
 }
 
 /* 종료 */
@@ -157,6 +161,7 @@ function wake() {
   if (bubbleOn) { bubble.className = 'bubble pop'; bubbleOn = false; }
   wrap.classList.add('awake');
   mark.textContent = '!'; mark.className = 'mark on big';
+  window.Sound && Sound.play('wake');
   setTimeout(() => showResult(false), 1100);
 }
 function finish() {
@@ -168,7 +173,8 @@ function showResult(ok) {
   if (ok && count > best) { best = count; try { localStorage.setItem('judeong-pet-best', best); } catch (e) {} }
   const b = $('pBadge');
   const win = ok && count >= GOAL;
-  b.textContent = win ? '목표 달성 · 승리!' : ok ? '푹 재웠어요 · 목표 미달성' : '주덩이가 깼어요';
+  setTimeout(() => window.Sound && Sound.play(win ? 'win' : 'lose'), ok ? 0 : 200);
+  b.textContent = win ? '목표 달성 · 승리!' : ok ? '푹 재웠어요 · 목표 미달성' : '오르미가 깼어요';
   b.className = win ? 'r-badge win' : 'r-badge miss';
   $('pGoal').textContent = win ? `목표 ${GOAL}회 이상을 달성했어요`
     : ok ? `목표 ${GOAL}회까지 ${GOAL - count}회 부족해요` : `깨우지 않고 ${GOAL}회 이상 쓰다듬어야 해요`;
@@ -192,6 +198,7 @@ function frame(nowMs) {
     if (now - lastPetT > 0.3) gauge = Math.max(0, gauge - DECAY * dt);
     setMood(gauge >= WARN ? 'warn' : gauge >= UNEASY ? 'uneasy' : (mood === 'uneasy' && gauge > UNEASY - 0.05 ? 'uneasy' : 'calm'));
     $('petTime').textContent = Math.max(0, left).toFixed(1);
+    { const sec = Math.ceil(left); if (left <= 5 && left > 0 && sec !== lastSec) { lastSec = sec; window.Sound && Sound.play('tick'); } }
     $('petBar').style.transform = 'scaleX(' + Math.max(0, left / TIME) + ')';
     $('clock').classList.toggle('low', left <= 5);
     if (left <= 0) finish();

@@ -1,4 +1,4 @@
-/* 03 출근길 주덩이 */
+/* 03 출근길 오르미 */
 (() => {
 'use strict';
 const $ = id => document.getElementById(id);
@@ -12,14 +12,13 @@ const GOAL_M = 500;          // 회사까지 거리
 const GOAL = GOAL_M * M;
 const SPEED_START = 260, SPEED_END = 450;   // 초당 단위
 const MAX_DROWSY = 3;        // 졸음 3칸이 차면 잠듦
-const CHAR_H = 150, CHAR_W = CHAR_H * 534 / 610;
-const HIT_W = 64, HIT_H = 46;               // 주덩이 발밑 충돌 영역
+const CHAR_H = 150, CHAR_W = CHAR_H * 887 / 900;   // 뒷모습 이미지 비율
+const HIT_W = 64, HIT_H = 46;               // 오르미 발밑 충돌 영역
 const CLEAR = 700;          // 회사 앞 이만큼(약 26m)은 장애물 없이 비워둠
 
 const scr = $('commute'), stage = $('cmStage'), cv = $('cmCv'), ctx = cv.getContext('2d');
-const img = new Image(); img.src = 'images/judeong.png';
-// 졸음이 쌓일수록 눈이 감긴 이미지로 바뀜 (눈 부분만 다름)
-const drowsyImgs = ['images/judeong.png', 'images/judeong-drowsy1.png', 'images/judeong-drowsy2.png'].map(src => { const i = new Image(); i.src = src; return i; });
+// 걸어가는 오르미는 뒷모습 이미지 사용
+const img = new Image(); img.src = 'images/oreumi-back.png';
 const sleepImg = new Image(); sleepImg.src = 'images/judeong-sleep.png';
 
 /* ---------- 상태 ---------- */
@@ -66,7 +65,9 @@ function resize() {
 /* ---------- 입력 ---------- */
 function move(d) {
   if (state !== 'run' && state !== 'count') return;
+  const prevLane = lane;
   lane = Math.max(0, Math.min(2, lane + d));
+  if (lane !== prevLane) window.Sound && Sound.play('swish');
   $('cmHint').classList.add('hide');
 }
 window.addEventListener('keydown', e => {
@@ -120,7 +121,7 @@ function update(dt) {
   if (state === 'count') {
     countT -= dt;
     const n = Math.ceil(countT);
-    if (n > 0) showCount(n); else { hideCount(); state = 'run'; }
+    if (n > 0) showCount(n); else { hideCount(); state = 'run'; window.Sound && Sound.play('go'); }
     return;
   }
   if (state === 'sleep' || state === 'arrive' || state === 'end') { endT += dt; return; }
@@ -162,6 +163,7 @@ function update(dt) {
 }
 
 function bump() {
+  window.Sound && Sound.play('bonk');
   drowsy++; hits++; inv = 1.3; slow = 0.6;
   pop('졸음 +1', POINT);
   stage.classList.remove('flash'); void stage.offsetWidth; stage.classList.add('flash');
@@ -171,6 +173,7 @@ function bump() {
   if (drowsy >= MAX_DROWSY) fallAsleep();
 }
 function drink(o) {
+  window.Sound && Sound.play('chime');
   o.taken = true; cups++;
   if (drowsy > 0) { drowsy--; pop('졸음 -1', POINT); } else pop('오름!', POINT);
   hud();
@@ -183,12 +186,14 @@ function banner(text, cls) {
   b.className = 'cm-banner ' + cls; void b.offsetWidth; b.classList.add('on');
 }
 function fallAsleep() {
+  window.Sound && Sound.play('sleep');
   state = 'sleep'; endT = 0; nextZ = 0;
   stage.classList.remove('flash');
   $('cmHint').classList.add('hide');
   setTimeout(() => { if (state === 'sleep') finish(false); }, 2300);
 }
 function arrive() {
+  window.Sound && Sound.play('win');
   dist = GOAL; state = 'arrive'; endT = 0;
   hud();
   burst(x, feetY - CHAR_H * 0.6, 46);
@@ -248,7 +253,7 @@ function hud() {
   $('cmFill').style.height = `${p * 100}%`;
   $('cmMarkerTxt').textContent = Math.floor(dist / M) + 'm';
 }
-function showCount(n) { const c = $('cmCount'); if (c.textContent !== String(n) || !c.classList.contains('on')) { c.textContent = n; c.classList.remove('on'); void c.offsetWidth; c.classList.add('on'); } }
+function showCount(n) { const c = $('cmCount'); if (c.textContent !== String(n) || !c.classList.contains('on')) { window.Sound && Sound.play('count'); c.textContent = n; c.classList.remove('on'); void c.offsetWidth; c.classList.add('on'); } }
 function hideCount() { $('cmCount').classList.remove('on'); }
 
 /* ---------- 그리기 ---------- */
@@ -379,7 +384,7 @@ function draw(dt) {
     ctx.fillRect(-roadLeft / scale - 10, -10, cv.width / dpr / scale + 20, viewH + 20);
   }
 
-  // 주덩이
+  // 오르미
   ctx.fillStyle = 'rgba(0,0,0,.07)';
   ctx.beginPath(); ctx.ellipse(x, feetY, 56, 9, 0, 0, Math.PI * 2); ctx.fill();
   if (asleep) {
@@ -395,7 +400,6 @@ function draw(dt) {
       pops.push({ text: 'Z', x: x + 70 + Math.random() * 20, y: feetY - 120, life: 1.8, color: '#8E8E8E', size: 26 + Math.random() * 18, vx: 18 + Math.random() * 14 });
     }
   } else if (img.complete) {
-    const face = drowsyImgs[Math.min(drowsy, 2)];
     const walking = state === 'run';
     const ph = t * 9;
     let bob = walking ? Math.abs(Math.sin(ph)) * 7 : 0;
@@ -407,7 +411,7 @@ function draw(dt) {
     ctx.save();
     if (inv > 0 && Math.floor(inv * 10) % 2 === 0) ctx.globalAlpha = 0.45;
     ctx.translate(x, feetY - bob); ctx.rotate(tilt + lean);
-    ctx.drawImage(face.complete ? face : img, -CHAR_W / 2, -CHAR_H, CHAR_W, CHAR_H);
+    ctx.drawImage(img, -CHAR_W / 2, -CHAR_H, CHAR_W, CHAR_H);
     ctx.restore();
   }
 

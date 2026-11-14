@@ -21,7 +21,7 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 /* ---------- 시작 페이지 ---------- */
 #home{overflow-y:auto;-webkit-overflow-scrolling:touch}
 .home-inner{margin:auto;display:flex;flex-direction:column;align-items:center;padding:36px 28px;gap:clamp(20px,3.6vh,36px);width:100%}
-.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;width:100%}
+.cards{display:flex;flex-wrap:wrap;justify-content:center;gap:20px;width:100%;max-width:840px}
 .card{display:flex;flex-direction:column}
 .card .btn{margin-top:auto}
 .home-head{text-align:center}
@@ -29,7 +29,7 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 .home-title{font-size:clamp(36px,5.4vw,58px);font-weight:200;letter-spacing:-.02em;margin-top:10px}
 .home-title b{font-weight:300;color:var(--point)}
 .home-sub{margin-top:10px;color:var(--sub);font-size:16px}
-.hero{width:clamp(130px,19vh,210px);aspect-ratio:315/360;position:relative}
+.hero{width:clamp(130px,19vh,210px);aspect-ratio:887/900;position:relative}
 .hero img{width:100%;height:100%;object-fit:contain;animation:bob 2.6s ease-in-out infinite}
 .hero::after{content:"";position:absolute;left:18%;right:18%;bottom:-10px;height:12px;border-radius:50%;
   background:#F1F1F1;animation:shadow 2.6s ease-in-out infinite;z-index:-1}
@@ -151,7 +151,7 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 .mark.on{opacity:1;transform:translate(-50%,0) scale(1);animation:markShake .35s ease-in-out infinite}
 .mark.big{font-size:clamp(56px,8vw,88px);top:-26%;animation:none}
 @keyframes markShake{0%,100%{rotate:-6deg}50%{rotate:6deg}}
-.talk{position:absolute;left:12%;top:2%;font-size:16px;padding:8px 14px;border:1px solid var(--line);border-radius:16px 16px 16px 4px;background:#fff;
+.talk{position:absolute;left:12%;top:2%;font-size:16px;padding:8px 14px;border:1px solid var(--line);border-radius:16px 16px 4px 16px;background:#fff;
   opacity:0;transform:translateY(6px);transition:opacity .2s, transform .2s;white-space:nowrap}
 .talk.on{opacity:1;transform:translateY(0)}
 
@@ -163,7 +163,7 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
   .back span{display:none}
 }
 
-/* ---------- 03 출근길 주덩이 ---------- */
+/* ---------- 03 출근길 오르미 ---------- */
 #commute{flex-direction:column}
 .drowsy{justify-self:end;display:flex;align-items:center;gap:8px}
 .drowsy small{font-size:14px;color:#C55400;font-weight:400;margin-right:2px}
@@ -219,3 +219,84 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 
 .cm-logo-row{display:flex;align-items:center}
 .cm-logo-row img{width:18px;height:18px;margin-right:6px}
+
+/* ---------- 04 시크릿 오르미 찾기 ---------- */
+#find{flex-direction:column}
+.fd-left{justify-self:start;display:flex;align-items:center;gap:14px}
+.fd-mission{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--sub);border:1px solid var(--line);border-radius:999px;padding:4px 14px 4px 6px;background:#fff}
+.fd-mission img{width:30px;height:34px;object-fit:contain}
+.fd-dots{display:flex;gap:5px;margin-left:8px;align-self:center}
+.fd-dots i{width:9px;height:9px;border-radius:50%;background:#EDEDED}
+.fd-dots i.now{background:var(--point)}
+.fd-dots i.ok{background:#1F1F1F}
+.fd-dots i.miss{background:#D6D6D6}
+.fd-stage{flex:1;position:relative;min-height:0;overflow:hidden;touch-action:none;-webkit-user-select:none;user-select:none}
+.fd-inner{position:absolute;left:0;top:0;transform-origin:0 0}
+.fd-sp{position:absolute;will-change:transform}
+.fd-sp::before{content:"";position:absolute;left:14%;right:14%;bottom:-4%;height:12%;border-radius:50%;background:rgba(0,0,0,.06)}
+.fd-sp .fl{position:absolute;inset:0}
+.fd-sp.flip .fl{transform:scaleX(-1)}
+.fd-sp img{width:100%;height:100%;display:block;pointer-events:none;animation:fdBob var(--dur,2.8s) ease-in-out var(--delay,0s) infinite}
+.fd-sp.pop{animation:fdPop .5s cubic-bezier(.3,1.5,.5,1) var(--in,0s) backwards}
+.fd-sp.no{animation:fdShake .42s ease-in-out}
+.fd-inner.done .fd-sp{transition:opacity .4s,filter .4s;opacity:.22;filter:grayscale(.5)}
+.fd-inner.done .fd-sp img{animation-play-state:paused}
+.fd-inner.done .fd-sp.fd-target{opacity:1;filter:none;z-index:4000!important;transition:transform .6s cubic-bezier(.3,1.5,.5,1);transform:scale(1.5)}
+.fd-inner.done .fd-sp.fd-target img{animation:fdBob .7s ease-in-out infinite}
+.fd-ring{position:absolute;z-index:3999;border-radius:50%;pointer-events:none;background:rgba(255,255,255,.88);border:2px solid var(--point);animation:fdRing 1.6s ease-out infinite}
+.fd-bit{position:absolute;z-index:4500;width:14px;height:14px;border-radius:4px;pointer-events:none;animation:fdBurst .9s cubic-bezier(.1,.7,.3,1) forwards}
+.fd-float{position:absolute;z-index:4600;pointer-events:none;transform:translate(-50%,-100%);padding:8px 16px;border-radius:999px;background:#fff;border:1.5px solid var(--point);color:#C55400;font-size:22px;font-weight:400;white-space:nowrap;animation:fdRise .9s ease-out forwards}
+.fd-toast{position:absolute;left:50%;bottom:28px;z-index:5100;transform:translateX(-50%) translateY(20px);padding:14px 30px;border-radius:999px;background:#fff;border:1px solid var(--line);
+  box-shadow:0 12px 30px rgba(0,0,0,.06);font-size:clamp(18px,2.4vw,24px);white-space:nowrap;opacity:0;transition:opacity .3s,transform .4s cubic-bezier(.3,1.5,.5,1);pointer-events:none}
+.fd-toast.on{opacity:1;transform:translateX(-50%)}
+.fd-toast em{font-style:normal;color:var(--point)}
+.fd-card{position:absolute;inset:0;z-index:5200;display:none;align-items:center;justify-content:center;flex-direction:column;background:rgba(255,255,255,.9)}
+.fd-card.on{display:flex;animation:fdFade .25s ease-out}
+.fd-card .rd{font-size:15px;color:#C55400;letter-spacing:.2em;font-weight:400}
+.fd-card .tt{margin-top:10px;font-size:clamp(40px,6vw,60px);font-weight:200;letter-spacing:-.02em;animation:fdPop .5s cubic-bezier(.3,1.5,.5,1) backwards}
+.fd-card .ds{margin-top:10px;font-size:17px;color:var(--sub)}
+#fdIntro,#fdResult{z-index:5300}
+.fd-hero{display:block;width:150px;margin:16px auto 8px;animation:fdBob 2.4s ease-in-out infinite}
+.fd-rules b{font-size:18px}
+.clock.low b{animation:fdBeat .5s ease-in-out infinite;display:inline-block}
+@keyframes fdBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+@keyframes fdPop{from{transform:scale(0)}}
+@keyframes fdShake{0%,100%{transform:translateX(0)}20%{transform:translateX(-9px) rotate(-4deg)}40%{transform:translateX(8px) rotate(4deg)}60%{transform:translateX(-6px) rotate(-2deg)}80%{transform:translateX(4px)}}
+@keyframes fdRing{0%{transform:scale(.7);opacity:1}100%{transform:scale(1.15);opacity:.5}}
+@keyframes fdBurst{to{transform:translate(var(--dx),var(--dy)) rotate(var(--rot));opacity:0}}
+@keyframes fdRise{0%{opacity:0;margin-top:10px}20%{opacity:1;margin-top:0}100%{opacity:0;margin-top:-40px}}
+@keyframes fdFade{from{opacity:0}}
+@keyframes fdBeat{0%,100%{transform:scale(1)}50%{transform:scale(1.12)}}
+@media (max-width:820px){.fd-mission span{display:none}.fd-mission{padding:4px 6px}}
+@media (max-width:700px){.fd-dots{display:none}}
+
+/* ---------- 소리 설정 버튼 (시작 페이지) ---------- */
+.snd{position:absolute;top:18px;right:20px;display:flex;gap:8px;z-index:5}
+.snd-btn{display:flex;align-items:center;gap:6px;height:36px;padding:0 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:#A0A0A0;font-size:13px;font-weight:400;
+  text-decoration:line-through;transition:color .2s,border-color .2s}
+.snd-btn.on{color:#C55400;border-color:var(--point);text-decoration:none}
+
+/* ---------- 시작 페이지: 스크롤 없이 한 화면에 (넓은 화면 4열 / 세로 화면 2×2) ---------- */
+#home .home-inner{padding:clamp(14px,3vh,34px) 24px clamp(14px,2.6vh,28px);gap:clamp(10px,2.2vh,24px);max-width:1400px}
+#home .eyebrow{font-size:12px}
+#home .home-title{font-size:clamp(30px,4.2vw,50px);margin-top:6px}
+#home .home-sub{font-size:14px;margin-top:6px;line-height:1.5}
+#home .hero{width:clamp(84px,14vh,160px)}
+#home .cards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;max-width:1360px}
+#home .card{width:auto;padding:20px 20px 18px;border-radius:20px}
+#home .card-top{gap:8px}
+#home .card-no{font-size:13px}
+#home .card-title{font-size:19px}
+#home .card-desc{font-size:13.5px;line-height:1.55;margin-top:6px}
+#home .how{margin:14px 0 14px;padding-top:12px;gap:7px}
+#home .how li{font-size:13.5px;gap:9px;line-height:1.45}
+#home .how li span{width:20px;height:20px;font-size:11px}
+#home .gift{font-size:12.5px;margin:-2px 0 14px;padding-top:12px;flex-wrap:wrap;gap:4px 8px;line-height:1.4}
+#home .card .btn{height:46px;font-size:16px}
+@media (max-width:999px){#home .cards{grid-template-columns:repeat(2,minmax(0,1fr));max-width:760px}}
+@media (max-width:560px){#home .cards{grid-template-columns:1fr}}
+#home .card-desc br{display:none}
+
+/* 잠꼬대 말풍선 꼬리: 오른쪽 아래(오르미 얼굴 쪽)를 가리킴 */
+.talk::after{content:"";position:absolute;right:10px;bottom:-6px;width:10px;height:10px;background:#fff;
+  border-right:1px solid var(--line);border-bottom:1px solid var(--line);transform:skewX(-30deg) rotate(45deg);border-radius:0 0 3px 0}

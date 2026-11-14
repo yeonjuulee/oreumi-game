@@ -12,7 +12,7 @@ const STEPS = 12;
 const STEP_W = 88, STEP_H = 58, BED_STEP_W = 200;
 const STAIR_X = 300;
 const START_X = 150;
-const CHAR_H = 104, CHAR_W = CHAR_H * 315 / 360;
+const CHAR_H = 104, CHAR_W = CHAR_H * 887 / 900;
 const HW = 26;                 // 충돌용 반폭
 const GRAV = 1500;
 const MAX_PULL = 240, MAX_SPEED = 2300;
@@ -24,7 +24,7 @@ const $ = id => document.getElementById(id);
 const home = $('home'), game = $('game'), stage = $('stage'), cv = $('cv'), ctx = cv.getContext('2d');
 // 골인 문구는 한 번 재생되면 표시를 지워둠 (화면을 다시 열 때 재생되는 문제 방지)
 $('goalPop').addEventListener('animationend', () => $('goalPop').classList.remove('go'));
-const img = new Image(); img.src = 'images/judeong.png';
+const img = new Image(); img.src = 'images/oreumi-main.png';
 
 /* ---------- 상태 ---------- */
 let steps = [];      // {floor, x0, x1, top}
@@ -101,6 +101,7 @@ cv.addEventListener('pointerdown', e => {
   cv.setPointerCapture(e.pointerId);
   drag = { id: e.pointerId, ax: cx, ay: cy, px: p.x, py: p.y };
   phase = 'drag';
+  window.Sound && Sound.play('grab');
   $('hint').classList.add('hide');
 });
 cv.addEventListener('pointermove', e => {
@@ -119,6 +120,7 @@ function release(e) {
   ch.vx = v.ux * sp; ch.vy = v.uy * sp;
   ch.spin = (ch.vx >= 0 ? 1 : -1) * (2 + sp / 900);
   phase = 'fly'; drag = null;
+  window.Sound && Sound.play('throw');
 }
 cv.addEventListener('pointerup', release);
 cv.addEventListener('pointercancel', release);
@@ -159,6 +161,7 @@ function physics(dt) {
         else edge = steps[floorAt(ch.x + dir * HW) - 1].x0;
         ch.x = edge - dir * (HW + 0.5);
         ch.vx = -ch.vx * (frontBed ? 0.18 : 0.3);
+        window.Sound && Sound.play('bump');
         ch.spin *= -0.5;
       }
     }
@@ -189,6 +192,9 @@ function land(f) {
   const onBed = sc.onBed, hit = sc.hit;
   results.push({ target, floor: f, pct: sc.pct, onBed, hit });
   landFx = { t: 0, onBed, impact, startRot: ch.rot };
+  window.Sound && Sound.play(onBed ? 'boing' : 'thud');
+  if (hit) setTimeout(() => window.Sound && Sound.play('goal'), 120);
+  else setTimeout(() => window.Sound && Sound.play('miss'), 350);
   if (hit) {
     burst(ch.x, ch.y - 30);
     const s = toScreen(ch.x, ch.y - CHAR_H - 30);
@@ -246,6 +252,7 @@ function showFinal() {
   $('fGoal').textContent = ok ? `목표 평균 ${GOAL_PCT}% 이상을 달성했어요` : `목표 평균 ${GOAL_PCT}% 이상 · ${GOAL_PCT - avg}%가 부족해요`;
   countUp($('fPct'), avg);
   $('finalCard').classList.add('on');
+  window.Sound && Sound.play(ok ? 'win' : 'lose');
 }
 $('againBtn').addEventListener('click', startGame);
 $('homeBtn').addEventListener('click', goHome);
