@@ -203,3 +203,19 @@ window.Sound = (() => {
   sfxBtn.addEventListener('click', () => { Sound.setSfx(!Sound.sfxOn); sync(); });
   sync();
 })();
+
+/* 첫 진입 화면: 누르면 사라지고, 그 순간 소리가 열려 배경음이 바로 시작됨 */
+(() => {
+  const sp = document.getElementById('splash');
+  if (!sp) return;
+  if (!Sound.bgmOn && !Sound.sfxOn) { sp.remove(); return; }
+  const go = e => {
+    if (e && e.type === 'keydown' && !['Enter', ' '].includes(e.key)) return;
+    Sound.unlock();
+    sp.classList.add('off');
+    setTimeout(() => sp.remove(), 450);
+    sp.removeEventListener('click', go); window.removeEventListener('keydown', go);
+  };
+  sp.addEventListener('click', go);
+  window.addEventListener('keydown', go);
+})();

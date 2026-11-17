@@ -281,7 +281,7 @@ function showResult() {
   const b = $('fdBadge');
   b.textContent = win ? '모두 찾았어요 · 승리!' : n > 0 ? `${n}마리 발견 · 목표 미달성` : '꼭꼭 숨었네요 · 목표 미달성';
   b.className = win ? 'r-badge win' : 'r-badge miss';
-  $('fdNote').textContent = win ? '눈썰미가 정말 대단해요' : '갈색 코를 기억하고 다시 도전해 보세요 · 3라운드 모두 찾으면 승리예요';
+  $('fdNote').textContent = win ? '눈썰미가 정말 대단해요.' : '실루엣을 기억하고 다시 도전해 보세요.\n3라운드 모두 찾으면 승리예요.';
   $('fdTime').textContent = n ? time.toFixed(1) + '초' : '-';
   $('fdBest').textContent = best && best.n ? `${best.t.toFixed(1)}초` : '-';
   const el = $('fdCount'), t0 = performance.now();

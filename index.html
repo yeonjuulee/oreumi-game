@@ -28,13 +28,13 @@
   <div class="cards">
     <div class="card">
       <div class="card-top"><span class="card-no">01</span><h2 class="card-title">오르미 계단 던지기</h2></div>
-      <p class="card-desc">오르미를 던져 침대가 놓인 목표 층에 안착시키세요. 목표 층에서 멀어질수록 일치율이 낮아져요.</p>
+      <p class="card-desc">오르미를 던져 침대가 놓인 목표 층에 안착시키세요.<br>목표 층에서 멀어질수록 일치율이 낮아져요.</p>
       <div class="gift"><i>승리 조건</i>3라운드 평균 일치율 70% 이상</div>
       <button class="btn btn-point" id="startBtn">시작하기</button>
     </div>
     <div class="card">
       <div class="card-top"><span class="card-no">02</span><h2 class="card-title">오르미 쓰다듬기</h2></div>
-      <p class="card-desc">잠든 오르미를 30초 동안 최대한 많이 쓰다듬어 주세요. 너무 쓰다듬으면 깨버리니 조심해요.</p>
+      <p class="card-desc">잠든 오르미를 30초 동안 최대한 많이 쓰다듬어 주세요.<br>너무 쓰다듬으면 깨버리니 조심해요.</p>
       <div class="gift"><i>승리 조건</i>깨우지 않고 30초 동안 70회 이상</div>
       <button class="btn btn-point" id="petStartBtn">시작하기</button>
     </div>
@@ -201,16 +201,19 @@
 
 <!-- 시크릿 오르미 찾기 -->
 <section id="find" class="screen">
-  <header class="topbar">
-    <div class="fd-left">
-      <button class="back" id="fdBack" aria-label="처음으로">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
-        <span>처음으로</span>
-      </button>
-      <div class="fd-mission"><img src="images/find/secret.png" alt=""><span>이 오르미를 찾아요</span></div>
+  <header class="topbar fd-top">
+    <button class="back" id="fdBack" aria-label="처음으로">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+      <span>처음으로</span>
+    </button>
+    <div class="fd-mission">
+      <span class="fd-sil"><img src="images/find/secret.png" alt="찾아야 할 오르미 실루엣"></span>
+      <span class="fd-mtext"><small>MISSION</small><b>이 오르미를 찾아요</b></span>
     </div>
-    <div class="pill"><small>라운드</small><strong id="fdRound">1</strong><span>/ 3</span><div class="fd-dots" id="fdDots"></div></div>
-    <div class="clock" id="fdClock"><b id="fdSec">20</b> 초</div>
+    <div class="fd-right">
+      <div class="fd-round"><small>라운드</small><strong id="fdRound">1</strong><span>/ 3</span><div class="fd-dots" id="fdDots"></div></div>
+      <div class="clock" id="fdClock"><b id="fdSec">20</b> 초</div>
+    </div>
   </header>
   <div class="timebar"><i id="fdBar"></i></div>
   <div class="fd-stage" id="fdStage">
@@ -234,6 +237,14 @@
     </div>
   </div>
 </section>
+
+<!-- 첫 진입 화면: 브라우저는 한 번 눌러야 소리를 허락하므로, 누르는 순간 배경음이 시작됨 -->
+<div class="splash" id="splash" role="button" tabindex="0" aria-label="화면을 눌러 시작하기">
+  <img src="images/oreumi-main.png" alt="">
+  <p class="splash-eyebrow">MINI GAME</p>
+  <h1 class="splash-title"><b>오르미</b> 미니게임</h1>
+  <p class="splash-tap">화면을 눌러 시작해요</p>
+</div>
 
 <!-- 게임 방법 모달 -->
 <div class="howto" id="howto" role="dialog" aria-modal="true" aria-labelledby="howtoTitle">

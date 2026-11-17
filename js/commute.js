@@ -232,7 +232,7 @@ function finish(ok) {
     b.textContent = '침대의 유혹에 졌어요'; b.className = 'r-badge miss';
     $('cmBig').innerHTML = `${m}<em>m</em>`;
     $('cmLabel').textContent = '걸어온 거리';
-    $('cmNote').textContent = `회사까지 ${GOAL_M - m}m 남았어요 · 잠들지 않고 도착하면 승리예요`;
+    $('cmNote').textContent = `회사까지 ${GOAL_M - m}m 남았어요.\n잠들지 않고 도착하면 승리예요.`;
     $('cmL1').textContent = '부딪힌 횟수'; $('cmV1').textContent = hits + '번';
     $('cmL2').textContent = '최고 기록'; $('cmV2').textContent = best >= GOAL_M ? (bestTime ? bestTime.toFixed(1) + '초' : '도착') : best + 'm';
   }
