@@ -249,14 +249,28 @@
 <!-- 게임 방법 모달 -->
 <div class="howto" id="howto" role="dialog" aria-modal="true" aria-labelledby="howtoTitle">
   <div class="howto-card">
-    <span class="r-badge">게임 방법</span>
-    <h2 class="howto-title"><span class="card-no" id="howtoNo">01</span><span id="howtoTitle">게임</span></h2>
-    <img class="howto-img" id="howtoImg" alt="찾아야 할 오르미" hidden>
-    <p class="howto-note" id="howtoNote" hidden></p>
-    <ol class="how howto-steps" id="howtoSteps"></ol>
-    <div class="gift"><i>승리 조건</i><span id="howtoWin"></span></div>
-    <button class="btn btn-point" id="howtoGo">시작하기</button>
-    <button class="howto-exit" id="howtoExit">처음으로</button>
+    <div class="howto-media">
+      <div class="howto-video">
+        <video id="howtoVideo" muted loop playsinline autoplay preload="auto" disablepictureinpicture aria-label="플레이 영상"></video>
+        <img class="howto-sil" id="howtoSil" alt="찾아야 할 오르미 실루엣" hidden>
+        <span class="howto-vtag" id="howtoVtag"><svg width="10" height="10" viewBox="0 0 10 10" aria-hidden="true"><path d="M2 1.2v7.6L8.6 5z" fill="#FE7606"/></svg>플레이 영상</span>
+        <span class="howto-mtag" id="howtoMtag" hidden><small>MISSION</small>이 실루엣의 오르미를 찾아요</span>
+      </div>
+    </div>
+    <div class="howto-body">
+      <span class="r-badge">게임 방법</span>
+      <h2 class="howto-title"><span class="card-no" id="howtoNo">01</span><span id="howtoTitle">게임</span></h2>
+      <div class="howto-mission">
+        <img class="howto-img" id="howtoImg" alt="찾아야 할 오르미" hidden>
+        <p class="howto-note" id="howtoNote" hidden></p>
+      </div>
+      <ol class="how howto-steps" id="howtoSteps"></ol>
+      <div class="gift"><i>승리 조건</i><span id="howtoWin"></span></div>
+      <div class="howto-actions">
+        <button class="btn btn-point" id="howtoGo">시작하기</button>
+        <button class="howto-exit" id="howtoExit">처음으로</button>
+      </div>
+    </div>
   </div>
 </div>
 

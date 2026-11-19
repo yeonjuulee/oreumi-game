@@ -301,8 +301,8 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 
 /* ---------- 게임 방법 모달 ---------- */
 .howto{position:fixed;inset:0;z-index:9000;display:none;align-items:center;justify-content:center;padding:20px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px)}
-.howto.on{display:flex;animation:howIn .22s ease-out}
-.howto-card{width:min(420px,100%);max-height:100%;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px 28px 18px;box-shadow:0 20px 60px rgba(0,0,0,.08);text-align:center;animation:howUp .28s cubic-bezier(.2,.9,.3,1.1)}
+.howto.on{display:flex}
+.howto-card{width:min(420px,100%);max-height:100%;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:24px;padding:26px 28px 18px;box-shadow:0 20px 60px rgba(0,0,0,.08);text-align:center;animation:howUp .26s cubic-bezier(.2,.9,.3,1.1)}
 .howto-title{margin-top:12px;font-size:24px;font-weight:300;display:flex;align-items:baseline;justify-content:center;gap:10px}
 .howto-img{display:block;width:110px;margin:14px auto 4px}
 .howto-note{font-size:13px;color:#C55400;margin-top:4px}
@@ -311,7 +311,7 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 .howto-exit{margin-top:8px;font-size:14px;color:var(--sub);padding:8px 12px}
 .howto-exit:hover{color:var(--ink)}
 @keyframes howIn{from{opacity:0}}
-@keyframes howUp{from{opacity:0;transform:translateY(14px) scale(.97)}}
+@keyframes howUp{from{transform:translateY(10px) scale(.98)}}
 
 [hidden]{display:none!important}
 /* 시작 페이지 카드: 설명 아래 여백, 승리 조건·버튼은 카드 아래쪽에 맞춰 정렬 */
@@ -348,3 +348,40 @@ button{font-family:inherit;font-weight:400;cursor:pointer;border:none;background
 .splash-tap{margin-top:30px;font-size:16px;color:#C55400;border:1px solid var(--point);border-radius:999px;padding:12px 26px;animation:tapPulse 1.6s ease-in-out infinite}
 @keyframes tapPulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.05);opacity:.75}}
 #home .gift{flex-direction:column;align-items:flex-start;gap:2px}
+
+/* ---------- 게임 방법 모달: 플레이 영상 (가로 2단 / 세로·좁은 화면은 위아래) ---------- */
+.howto-card{width:min(960px,100%);display:flex;gap:32px;align-items:stretch;padding:24px;border-radius:28px;text-align:left}
+.howto-media{flex:0 0 56%;min-width:0;display:flex;flex-direction:column;justify-content:center}
+.howto-video{position:relative;width:100%;aspect-ratio:1280/690;border-radius:18px;overflow:hidden;border:1px solid var(--line);background:var(--point-soft)}
+.howto-video video{display:block;width:100%;height:100%;object-fit:cover;pointer-events:none}
+.howto-vtag{position:absolute;left:12px;top:12px;display:flex;align-items:center;gap:6px;font-size:12px;font-weight:400;background:#fff;border:1px solid var(--line);border-radius:999px;padding:4px 10px 4px 8px}
+.howto-body{flex:1;min-width:0;display:flex;flex-direction:column;align-items:flex-start;padding-top:4px}
+.howto .howto-title{justify-content:flex-start;margin-top:12px}
+.howto-mission{display:flex;align-items:center;gap:12px;margin-top:12px}
+.howto-mission .howto-img{width:56px;margin:0}
+.howto-mission .howto-note{margin:0}
+.howto-steps{width:100%;margin:16px 0 14px}
+.howto .gift{width:100%;justify-content:flex-start;flex-direction:column;align-items:flex-start;gap:2px;margin:0 0 18px}
+.howto-actions{width:100%;margin-top:auto;display:flex;flex-direction:column;align-items:center}
+.howto-actions .howto-exit{margin-top:4px}
+.howto.no-video .howto-media{display:none}
+.howto.no-video .howto-card{width:min(420px,100%)}
+@media (max-width:900px), (orientation:portrait){
+  .howto-card{flex-direction:column;gap:0;width:min(580px,100%);padding:20px 20px 12px;text-align:center}
+  .howto-media{flex:none}
+  .howto-body{align-items:center;padding:18px 6px 0}
+  .howto .howto-title{justify-content:center}
+  .howto-steps{text-align:left}
+  .howto .gift{flex-direction:row;justify-content:center;align-items:center;gap:8px}
+  .howto-actions{margin-top:0}
+}
+@media (max-height:640px) and (orientation:landscape){
+  .howto-card{padding:18px;gap:24px}
+  .howto-steps{margin:10px 0}
+  .howto-steps li{font-size:14px}
+}
+
+/* 시크릿 찾기: 영상 대신 실루엣 */
+.howto-sil{position:absolute;left:50%;top:44%;height:62%;transform:translate(-50%,-50%);filter:brightness(0)}
+.howto-mtag{position:absolute;left:50%;bottom:7%;transform:translateX(-50%);display:flex;align-items:center;gap:8px;white-space:nowrap;font-size:15px;font-weight:400;background:#fff;border:1px solid var(--point);border-radius:999px;padding:7px 16px}
+.howto-mtag small{font-size:11px;letter-spacing:.12em;color:#C55400}
